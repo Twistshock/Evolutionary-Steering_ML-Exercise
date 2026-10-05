@@ -1,34 +1,88 @@
-// The Nature of Code
 // Daniel Shiffman
-// http://natureofcode.com
+// The Coding Train
+// Coding Challenge 69: Steering Evolution
 
-// Seeking "vehicle" follows the mouse position
+// Part 1: https://youtu.be/flxOkx0yLrY
+// Part 2: https://youtu.be/XaOVH8ZSRNA
+// Part 3: https://youtu.be/vZUWTlK7D2Q
+// Part 4: https://youtu.be/ykOcaInciBI
+// Part 5: https://youtu.be/VnFF5V5DS8s
 
-// Implements Craig Reynold's autonomous steering behaviors
-// One vehicle "seeks"
-// See: http://www.red3d.com/cwr/
+const vehicles = [];
+const food = [];
+const poison = [];
 
-let v;
+let debug;
 
 function setup() {
   createCanvas(640, 360);
-  v = new Vehicle(width / 2, height / 2);
+  for (let i = 0; i < 50; i++) {
+    const x = random(width);
+    const y = random(height);
+    vehicles[i] = new Vehicle(x, y);
+  }
+
+  for (let i = 0; i < 40; i++) {
+    const x = random(width);
+    const y = random(height);
+    food.push(createVector(x, y));
+  }
+
+  for (let i = 0; i < 20; i++) {
+    const x = random(width);
+    const y = random(height);
+    poison.push(createVector(x, y));
+  }
+
+  debug = createCheckbox();
+
+}
+
+function mouseDragged() {
+  vehicles.push(new Vehicle(mouseX, mouseY));
 }
 
 function draw() {
-  background(51);
+  background(0);
 
-  let mouse = createVector(mouseX, mouseY);
+  if (random(1) < 0.1) {
+    const x = random(width);
+    const y = random(height);
+    food.push(createVector(x, y));
+  }
 
-  // Draw an ellipse at the mouse position
-  fill(127);
-  stroke(200);
-  strokeWeight(2);
-  ellipse(mouse.x, mouse.y, 48, 48);
+  if (random(1) < 0.01) {
+    const x = random(width);
+    const y = random(height);
+    poison.push(createVector(x, y));
+  }
 
-  // Call the appropriate steering behaviors for our agents
-  v.seek(mouse);
-  v.update();
-  v.display();
+  for (let i = 0; i < food.length; i++) {
+    fill(0, 255, 0);
+    noStroke();
+    ellipse(food[i].x, food[i].y, 4, 4);
+  }
 
+  for (let i = 0; i < poison.length; i++) {
+    fill(255, 0, 0);
+    noStroke();
+    ellipse(poison[i].x, poison[i].y, 4, 4);
+  }
+
+  for (let i = vehicles.length - 1; i >= 0; i--) {
+    vehicles[i].eat(food);
+    vehicles[i].update();
+    vehicles[i].display();
+    /*const newVehicle = vehicles[i].clone();
+    if (newVehicle != null) {
+      vehicles.push(newVehicle);
+    }*/
+    /*if (vehicles[i].dead()) {
+      const x = vehicles[i].position.x;
+      const y = vehicles[i].position.y;
+      food.push(createVector(x, y));
+      vehicles.splice(i, 1);
+    }*/
+
+  }
 }

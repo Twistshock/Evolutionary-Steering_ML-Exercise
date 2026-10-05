@@ -30,6 +30,23 @@ class Vehicle {
     this.acceleration.add(force);
   }
 
+  eat(list) {
+    let record = Infinity;
+    let closest = -1;
+
+    for (let i = 0; i < list.length; i++) {
+      const d = p5.Vector.dist(this.position, list[i]);
+      if (d < record) {
+        record = d;
+        closest = i;
+      }
+    }
+
+    if (closest !== -1) {
+      this.seek(list[closest]);
+    }
+  }
+
   // A method that calculates a steering force towards a target
   // STEER = DESIRED MINUS VELOCITY
   seek(target) {
