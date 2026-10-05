@@ -52,6 +52,29 @@ class Vehicle {
     }
   }
 
+  donteat(list) {
+    let record = Infinity;
+    let closest = -1;
+
+    for (let i = 0; i < list.length; i++) {
+      const d = p5.Vector.dist(this.position, list[i]);
+      if (d < record) {
+        record = d;
+        closest = i;
+      }
+    }
+
+    if (record < 5 )
+        {
+            food.splice(closest,1);
+        }
+
+    if (closest !== -1) {
+      this.avoid(list[closest]);
+    }
+  }
+
+
   // A method that calculates a steering force towards a target
   // STEER = DESIRED MINUS VELOCITY
   seek(target) {
@@ -63,6 +86,19 @@ class Vehicle {
 
     // Steering = Desired minus velocity
     let steer = p5.Vector.sub(desired, this.velocity);
+    steer.limit(this.maxforce); // Limit to maximum steering force
+
+    this.applyForce(steer);
+  }
+
+  avoid(target){
+    let undesired = p5.Vector.sub(target, this.position).mult(-1); // A vector pointing away from the location to the target
+
+    // Scale to maximum speed
+    undesired.setMag(this.maxspeed);
+
+    // Steering = Desired minus velocity
+    let steer = p5.Vector.sub(undesired, this.velocity);
     steer.limit(this.maxforce); // Limit to maximum steering force
 
     this.applyForce(steer);
