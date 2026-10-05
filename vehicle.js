@@ -42,6 +42,11 @@ class Vehicle {
       }
     }
 
+    if (record < 5 )
+        {
+            food.splice(closest,1);
+        }
+
     if (closest !== -1) {
       this.seek(list[closest]);
     }
