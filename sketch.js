@@ -70,6 +70,7 @@ function draw() {
   }
 
   for (let i = vehicles.length - 1; i >= 0; i--) {
+    vehicles[i].boundaries(25);
     vehicles[i].behaviors(food, poison);
     vehicles[i].update();
     vehicles[i].display();
