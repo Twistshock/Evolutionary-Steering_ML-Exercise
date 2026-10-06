@@ -4,15 +4,16 @@
 
 // The "Vehicle" class
 
+var mr = 0.05; // mutation rate.
 class Vehicle {
   constructor(x, y, dna) {
     this.acceleration = createVector(0, 0);
     this.velocity = createVector(0, -2);
     this.position = createVector(x, y);
     this.r = 6;
-    this.maxspeed = 3;
+    this.maxspeed = 6;
     this.maxforce = 0.2;
-    this.health = 1;
+    this.health = 1;  
 
     if(dna === undefined)
       {
@@ -32,16 +33,20 @@ class Vehicle {
       {
         this.dna = [];
         this.dna[0] = dna[0];
+        this.dna[0] += random(1) < mr ? random(-0.1, 0.1) : 0;
         this.dna[1] = dna[1];
+        this.dna[1] += random(1) < mr ? random(-0.1, 0.1) : 0;
         this.dna[2] = dna[2];
+        this.dna[2] += random(1) < mr ? random(-0.1, 0.1) : 0;
         this.dna[3] = dna[3];
+        this.dna[3] += random(1) < mr ? random(-0.1, 0.1) : 0;
       }
 
   }
 
   // Method to update location
   update() {
-    this.health -= 0.005;
+    this.health -= 0.0035;
     // Update velocity
     this.velocity.add(this.acceleration);
     // Limit speed

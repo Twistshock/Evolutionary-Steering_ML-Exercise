@@ -15,8 +15,8 @@ const poison = [];
 let debug;
 
 function setup() {
-  createCanvas(640, 360);
-  for (let i = 0; i < 5; i++) {
+  createCanvas(1280, 720);
+  for (let i = 0; i < 50; i++) {
     const x = random(width);
     const y = random(height);
     vehicles[i] = new Vehicle(x, y, undefined);
@@ -45,13 +45,13 @@ function mouseDragged() {
 function draw() {
   background(0);
 
-  if (random(1) < 0.1) {
+  if (random(1) < 0.15) {
     const x = random(width);
     const y = random(height);
     food.push(createVector(x, y));
   }
 
-  if (random(1) < 0.01) {
+  if (random(1) < 0.01 && poison.length <= 20) {
     const x = random(width);
     const y = random(height);
     poison.push(createVector(x, y));
@@ -86,7 +86,10 @@ function draw() {
     }
 
     if (vehicles[i].dead()) {
+      var x = vehicles[i].position.x;
+      var y = vehicles[i].position.y;
       vehicles.splice(i, 1);
+      food.push(createVector(x, y));
     }
   }
 }
