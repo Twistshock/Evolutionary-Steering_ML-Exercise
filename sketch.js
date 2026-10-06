@@ -19,7 +19,7 @@ function setup() {
   for (let i = 0; i < 5; i++) {
     const x = random(width);
     const y = random(height);
-    vehicles[i] = new Vehicle(x, y);
+    vehicles[i] = new Vehicle(x, y, undefined);
   }
 
   for (let i = 0; i < 40; i++) {
@@ -74,19 +74,19 @@ function draw() {
     vehicles[i].behaviors(food, poison);
     vehicles[i].update();
     vehicles[i].display();
-    /*const newVehicle = vehicles[i].clone();
-    if (newVehicle != null) {
-      vehicles.push(newVehicle);
-    }*/
-    /*if (vehicles[i].dead()) {
-      const x = vehicles[i].position.x;
-      const y = vehicles[i].position.y;
-      food.push(createVector(x, y));
-      vehicles.splice(i, 1);
-    }*/
-    if(vehicles[i].dead())
-      {
-        vehicles.splice(i,1);
+
+    if (vehicles[i].health > 1.5) {
+      const newVehicle = vehicles[i].cloneMe();
+      if (newVehicle) {
+        vehicles.push(newVehicle);
+        vehicles[i].health = 1;// reduce to healthy
+        
       }
+     print("Reproduce!");
+    }
+
+    if (vehicles[i].dead()) {
+      vehicles.splice(i, 1);
+    }
   }
 }

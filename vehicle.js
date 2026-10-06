@@ -5,25 +5,38 @@
 // The "Vehicle" class
 
 class Vehicle {
-  constructor(x, y) {
+  constructor(x, y, dna) {
     this.acceleration = createVector(0, 0);
     this.velocity = createVector(0, -2);
     this.position = createVector(x, y);
     this.r = 6;
-    this.maxspeed = 4;
+    this.maxspeed = 3;
     this.maxforce = 0.2;
     this.health = 1;
 
-    this.dna = [];
-    // Food weight
-    this.dna[0] = random(-5,5);
-    // Poison Weight
-    this.dna[1] = random(-5,5);
+    if(dna === undefined)
+      {
+        this.dna = [];
+        // Random DNA if no parent
+        // Food weight
+        this.dna[0] = random(-5,5);
+        // Poison Weight
+        this.dna[1] = random(-5,5);
 
-    //Food detection
-    this.dna[2] = random(this.maxspeed,100);
-    //poison detection
-    this.dna[3] = random(this.maxspeed,100);
+        //Food detection
+        this.dna[2] = random(this.maxspeed,100);
+        //poison detection
+        this.dna[3] = random(this.maxspeed,100);
+      }
+    else 
+      {
+        this.dna = [];
+        this.dna[0] = dna[0];
+        this.dna[1] = dna[1];
+        this.dna[2] = dna[2];
+        this.dna[3] = dna[3];
+      }
+
   }
 
   // Method to update location
@@ -48,7 +61,7 @@ class Vehicle {
     
     if(good.length > 0)
       {
-        var steerG = this.eat(good, 0.25, this.dna[2]);
+        var steerG = this.eat(good, 0.15, this.dna[2]);
         if(steerG)
           {
             steerG.mult(this.dna[0]);
@@ -67,11 +80,19 @@ class Vehicle {
       }
   }
 
+  cloneMe()
+  {
+    print("A copy of a copy of a copy...");
+    return new Vehicle(this.position.x, this.position.y, this.dna);
+
+  }
+
+
   eat(list, nutrition, perception) {
     let record = Infinity;
     let closest = -1;
 
-    for (let i = 0; i < list.length; i++) {
+    for (var i = list.length-1; i>= 0; i--) {
       const d = p5.Vector.dist(this.position, list[i]);
       if (d < record && d < perception) {
         record = d;
@@ -83,7 +104,6 @@ class Vehicle {
       const target = list[closest];
       if (record < 5) {
         this.health += nutrition;
-        this.health = min(this.health, 1);
         list.splice(closest, 1);
       }
       return this.seek(target);
