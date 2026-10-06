@@ -16,7 +16,7 @@ let debug;
 
 function setup() {
   createCanvas(640, 360);
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 5; i++) {
     const x = random(width);
     const y = random(height);
     vehicles[i] = new Vehicle(x, y);
@@ -71,7 +71,7 @@ function draw() {
 
   for (let i = vehicles.length - 1; i >= 0; i--) {
     vehicles[i].eat(food);
-    vehicles[i].donteat(poison);
+    vehicles[i].eat(poison);
     vehicles[i].update();
     vehicles[i].display();
     /*const newVehicle = vehicles[i].clone();

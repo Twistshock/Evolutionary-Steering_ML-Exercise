@@ -42,13 +42,12 @@ class Vehicle {
       }
     }
 
-    if (record < 5 )
-        {
-            food.splice(closest,1);
-        }
-
     if (closest !== -1) {
-      this.seek(list[closest]);
+      const target = list[closest];
+      if (record < 5) {
+        list.splice(closest, 1);
+      }
+      this.seek(target);
     }
   }
 
@@ -56,21 +55,23 @@ class Vehicle {
     let record = Infinity;
     let closest = -1;
 
-    for (let i = 0; i < list.length; i++) {
-      const d = p5.Vector.dist(this.position, list[i]);
-      if (d < record) {
-        record = d;
-        closest = i;
-      }
-    }
-
-    if (record < 5 )
+    for (let i = 0; i < list.length; i++)
         {
-            food.splice(closest,1);
+        const d = p5.Vector.dist(this.position, list[i]);
+        if (d < record)
+            {
+                record = d;
+                closest = i;
+            }
         }
 
-    if (closest !== -1) {
-      this.avoid(list[closest]);
+    if (closest !== -1)
+        {
+      const target = list[closest];
+      if (record < 5) {
+        list.splice(closest, 1);
+      }
+      this.avoid(target);
     }
   }
 
@@ -95,7 +96,7 @@ class Vehicle {
     let undesired = p5.Vector.sub(target, this.position).mult(-1); // A vector pointing away from the location to the target
 
     // Scale to maximum speed
-    undesired.setMag(this.maxspeed);
+    undesired.setMag(this.maxspeed/4);
 
     // Steering = Desired minus velocity
     let steer = p5.Vector.sub(undesired, this.velocity);
