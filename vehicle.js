@@ -37,14 +37,21 @@ class Vehicle {
 
   behaviors (good, bad)
   {
-    var steerG = this.eat(good);
-    var steerB = this.eat(bad);
+    
 
-    steerG.mult(this.dna[0]);
-    steerB.mult(this.dna[1]);
 
-    this.applyForce(steerG);
-    this.applyForce(steerB);
+    if(good.length > 0)
+      {
+        var steerG = this.eat(good);
+        steerG.mult(this.dna[0]);
+        this.applyForce(steerG);
+      }
+    if(bad.length > 0)
+      {
+        var steerB = this.eat(bad);
+        steerB.mult(this.dna[1]);
+        this.applyForce(steerB);
+      }
   }
 
   eat(list) {
