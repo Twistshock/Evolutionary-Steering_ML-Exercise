@@ -12,6 +12,8 @@ class Vehicle {
     this.r = 6;
     this.maxspeed = 4;
     this.maxforce = 0.2;
+    this.health = 1;
+
     this.dna = [];
     this.dna[0] = random(-5,5);
     this.dna[1] = random(-5,5);
@@ -21,6 +23,7 @@ class Vehicle {
 
   // Method to update location
   update() {
+    this.health -= 0.005;
     // Update velocity
     this.velocity.add(this.acceleration);
     // Limit speed
@@ -42,19 +45,19 @@ class Vehicle {
 
     if(good.length > 0)
       {
-        var steerG = this.eat(good);
+        var steerG = this.eat(good, 0.1);
         steerG.mult(this.dna[0]);
         this.applyForce(steerG);
       }
     if(bad.length > 0)
       {
-        var steerB = this.eat(bad);
+        var steerB = this.eat(bad, -0.5);
         steerB.mult(this.dna[1]);
         this.applyForce(steerB);
       }
   }
 
-  eat(list) {
+  eat(list, nutrition) {
     let record = Infinity;
     let closest = -1;
 
@@ -69,6 +72,7 @@ class Vehicle {
     if (closest !== -1) {
       const target = list[closest];
       if (record < 5) {
+        this.health += nutrition;
         list.splice(closest, 1);
       }
       return this.seek(target);
@@ -105,15 +109,28 @@ class Vehicle {
     this.applyForce(steer);
   }
 
+  dead()
+  {
+    return (this.health <= 0)
+  }
+
   display() {
     // Draw a triangle rotated in the direction of velocity
     let theta = this.velocity.heading() + PI / 2;
-    fill(127);
-    stroke(200);
+
+    var green = color(0,255,0);
+    var red = color(255,0,0);
+
+    // https://p5js.org/reference/p5/lerpColor/
+    var col = lerpColor(red,green, this.health);
+
+    fill(col);
+    stroke(col);
     strokeWeight(1);
     push();
     translate(this.position.x, this.position.y);
     rotate(theta);
+
     beginShape();
     vertex(0, -this.r * 2);
     vertex(-this.r, this.r * 2);

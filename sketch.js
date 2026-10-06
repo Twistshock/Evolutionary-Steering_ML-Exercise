@@ -83,6 +83,9 @@ function draw() {
       food.push(createVector(x, y));
       vehicles.splice(i, 1);
     }*/
-
+    if(vehicles[i].dead())
+      {
+        vehicles.splice(i,1);
+      }
   }
 }
