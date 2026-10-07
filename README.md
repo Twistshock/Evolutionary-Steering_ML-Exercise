@@ -1,0 +1,1 @@
+Made based on Daniel Shiffman's video series where he creates a genetic algorithm for some food-seeking rockets.

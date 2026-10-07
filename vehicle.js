@@ -33,13 +33,13 @@ class Vehicle {
       {
         this.dna = [];
         this.dna[0] = dna[0];
-        this.dna[0] += random(1) < mr ? random(-0.1, 0.1) : 0;
+        this.dna[0] += random(1) < mr ? random(-0.5, 0.5) : 0;  // Fairly high mutation rate and effect so it's more visible.
         this.dna[1] = dna[1];
-        this.dna[1] += random(1) < mr ? random(-0.1, 0.1) : 0;
+        this.dna[1] += random(1) < mr ? random(-0.5, 0.5) : 0;
         this.dna[2] = dna[2];
-        this.dna[2] += random(1) < mr ? random(-0.1, 0.1) : 0;
+        this.dna[2] += random(1) < mr ? random(-0.5, 0.5) : 0;
         this.dna[3] = dna[3];
-        this.dna[3] += random(1) < mr ? random(-0.1, 0.1) : 0;
+        this.dna[3] += random(1) < mr ? random(-0.5, 0.5) : 0;
       }
 
   }
